@@ -64,3 +64,26 @@ app.post('/api/notes', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
+
+// DELETE ROUTE
+app.delete('/api/notes/:id', (req, res) => {
+    const noteId = req.params.id;
+    // Read db.json file
+    fs.readFile('db/db.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Error reading notes" });
+        }
+        let notes = JSON.parse(data);
+        // Filter out the note with the given id
+        notes = notes.filter(note => note.id !== noteId);
+        // Write the new notes array back to db.json
+        fs.writeFile('db/db.json', JSON.stringify(notes), (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: "Error writing notes" });
+            }
+            res.json({ message: "Note deleted successfully" });
+        });
+    });
+});
