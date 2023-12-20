@@ -60,6 +60,7 @@ app.post('/api/notes', (req, res) => {
     });
 });
 
+
 // Starting the server
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
